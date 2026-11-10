@@ -3,27 +3,55 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Aspirasisos - Layanan Aspirasi dan Pengaduan Siswa Anonim</title>
+<title>Aspirasisos - Layanan Aspirasi dan Pengaduan Siswa</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 <style>
-  :root { --bg: #f8fafc; --surface: #ffffff; --primary: #4f46e5; --danger: #ef4444; --text: #1e293b; --border: #cbd5e1; }
-  body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 1.5rem; }
-  .container { max-width: 650px; margin: 0 auto; }
-  .card { background: var(--surface); padding: 2rem; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 1.5rem; border: 1px solid var(--border); }
-  .header { text-align: center; margin-bottom: 2rem; }
-  .header h2 { font-size: 2.2rem; margin-bottom: 0.5rem; color: #0f172a; font-weight: 800; }
-  .slogan { color: #64748b; font-style: italic; font-size: 1.05rem; }
-  .btn { display: block; width: 100%; padding: 1rem; border-radius: 12px; font-weight: bold; font-size: 1.1rem; border: none; cursor: pointer; text-align: center; color: white; text-decoration: none; margin-bottom: 1rem; transition: 0.2s; }
-  .btn-primary { background: var(--primary); }
-  .btn-primary:hover { background: #4338ca; transform: translateY(-2px); }
-  .btn-danger { background: var(--danger); }
-  .btn-danger:hover { background: #dc2626; transform: translateY(-2px); }
-  input, select, textarea { width: 100%; padding: 0.8rem; margin-top: 0.5rem; margin-bottom: 1rem; border: 2px solid var(--border); border-radius: 8px; box-sizing: border-box; font-size: 1rem; }
-  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
-  .hidden { display: none; }
-  .status-box { background: #e0e7ff; padding: 1.5rem; border-radius: 12px; margin-top: 1rem; border-left: 5px solid var(--primary); }
+  :root { 
+    --bg-app: #f4f7f6; --surface: #ffffff; --primary: #0f172a; --primary-hover: #1e293b; 
+    --accent: #2563eb; --accent-hover: #1d4ed8; --danger: #ef4444; --danger-hover: #dc2626; 
+    --success: #166534; --text-main: #1e293b; --text-muted: #64748b; --border: #e2e8f0; 
+    --radius-card: 28px; --radius-btn: 16px;
+  }
+  body { 
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+    background-color: var(--bg-app); color: var(--text-main); margin: 0; padding: 2rem 1rem; min-height: 100vh;
+  }
+  .container { max-width: 720px; width: 100%; margin: 0 auto; position: relative; z-index: 10; }
+  .card { 
+    background: var(--surface); padding: 2.5rem 2rem; border-radius: var(--radius-card); 
+    box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.05), 0 0 1px 1px rgba(15, 23, 42, 0.04); 
+    margin-bottom: 1.5rem; border: 1px solid var(--border); 
+  }
+  .header { text-align: center; margin-bottom: 2.5rem; }
+  .header h2 { font-size: 2.8rem; margin-bottom: 0.5rem; color: var(--primary); font-weight: 800; letter-spacing: -1.5px; }
+  .slogan { color: var(--text-muted); font-style: italic; font-size: 1.1rem; }
+  .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; position: relative; z-index: 20; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 1.15rem 1.5rem; border-radius: var(--radius-btn); font-weight: 600; font-size: 0.98rem; border: none; cursor: pointer; text-align: center; color: white; text-decoration: none; transition: all 0.25s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.04); position: relative; z-index: 30; }
+  .btn-main { background: var(--accent); }
+  .btn-main:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37,99,235,0.2); }
+  .btn-alert { background: var(--danger); }
+  .btn-alert:hover { background: var(--danger-hover); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(239,68,68,0.2); }
+  .feature-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+  .feature-box { background: #fafbfc; padding: 1.25rem; border-radius: 20px; border: 1px solid var(--border); transition: transform 0.2s; }
+  .feature-box:hover { transform: translateY(-2px); }
+  .feature-box h4 { margin: 0 0 0.3rem 0; color: var(--primary); font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; gap: 0.4rem; }
+  .feature-box p { margin: 0; font-size: 0.83rem; color: var(--text-muted); line-height: 1.4; }
+  input, select, textarea { width: 100%; padding: 1rem 1.2rem; margin-top: 0.4rem; margin-bottom: 1.2rem; border: 1.5px solid var(--border); border-radius: 14px; box-sizing: border-box; font-size: 1rem; background: #fafbfc; transition: all 0.2s; color: var(--text-main); }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08); }
+  label { font-weight: 600; font-size: 0.88rem; color: #475569; display: block; }
+  .hidden { display: none !important; }
+  .status-result-box { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 1.5rem; border-radius: 20px; margin-top: 1rem; border-left: 5px solid #22c55e; }
+  .table-container { overflow-x: auto; margin-top: 1rem; }
+  table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
+  th, td { padding: 1rem; border-bottom: 1px solid var(--border); }
+  th { background: #f8fafc; font-weight: 700; color: var(--primary); }
+  tr:hover { background: #fafbfc; }
+  .rating-stars { color: #f59e0b; font-size: 1rem; letter-spacing: 2px; }
+  .back-link { background: none; border: none; color: var(--accent); font-weight: 700; cursor: pointer; margin-bottom: 1.2rem; font-size: 0.95rem; display: flex; align-items: center; gap: 0.4rem; padding: 0; position: relative; z-index: 30; }
+  .back-link:hover { color: var(--accent-hover); }
 </style>
 </head>
-<body>
+<body onload="initApp()">
 
 <div class="container">
   
@@ -34,93 +62,147 @@
       <p class="slogan">"Karena suara siswa adalah milik bersama dan layak didengar."</p>
     </div>
     
-    <div class="card" style="background:#eff6ff; border-color: #bfdbfe;">
-      <p style="margin:0; font-size:0.95rem; color: #1e40af;">🔒 <b>Jaminan Kerahasiaan:</b> Laporan tanpa identitas. Hanya Wakil Kepala Sekolah dan Guru BK yang memiliki akses untuk membaca laporanmu.</p>
+    <div class="action-grid">
+      <button type="button" class="btn btn-main" onclick="showVerifikasi()">✍️ Aspirasi / Pengaduan</button>
+      <a href="https://wa.me/6281234567890?text=Halo%20Bapak/Ibu%20Guru%20BK,%20saya%20butuh%20bantuan%20darurat." class="btn btn-alert" target="_blank">🚨 Saluran Darurat</a>
     </div>
 
-    <button class="btn btn-primary" onclick="showForm()">✍️ Kirim Saran / Keluhan</button>
-    <a href="https://wa.me/6281234567890?text=Halo%20Bapak/Ibu%20Guru%20BK,%20saya%20butuh%20bantuan%20darurat." class="btn btn-danger" target="_blank">🚨 Saluran Darurat (WhatsApp BK)</a>
+    <div class="feature-row">
+      <div class="feature-box">
+        <h4>🔒 100% Aman</h4>
+        <p>Verifikasi data terintegrasi khusus database internal sekolah secara real-time</p>
+      </div>
+      <div class="feature-box">
+        <h4>⚡ Terhubung Cepat</h4>
+        <p>Gunakan Saluran Darurat jika keadaan urgent.</p>
+      </div>
+    </div>
 
+    <!-- Kotak Cek Status -->
     <div class="card">
-      <h3 style="margin-top:0;">🔍 Cek Status Laporan</h3>
-      <p style="font-size: 0.9rem; color: #64748b;">Masukkan kode tiketmu untuk melihat progress tindak lanjut.</p>
-      <input type="text" id="cekKode" placeholder="Contoh: A8X9KL" maxlength="6" style="font-family: monospace; text-transform: uppercase;">
-      <button class="btn btn-primary" onclick="cekStatus()" style="width:auto; padding: 0.8rem 2rem;">Cek Status</button>
-      <div id="hasilCek" class="hidden status-box"></div>
+      <h3 style="margin-top:0; color: var(--primary); font-size: 1.3rem; font-weight: 700; margin-bottom: 0.4rem;">🔍 Cek Status Laporan</h3>
+      <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.2rem;">Masukkan kode tiket unik Anda untuk memantau progress penanganan.</p>
+      
+      <div style="display: flex; gap: 0.8rem;">
+        <input type="text" id="cekKode" placeholder="Cth: A8X9KL" maxlength="6" style="margin:0; font-family: monospace; text-transform: uppercase; font-weight: bold; letter-spacing: 2px;">
+        <button type="button" class="btn btn-main" onclick="cekStatus()" style="width: auto; padding: 0 1.8rem; margin:0; border-radius: 14px;">Cek</button>
+      </div>
+      <div id="hasilCek" class="hidden status-result-box"></div>
+    </div>
+
+    <!-- Tabel Transparansi Aspirasi Selesai -->
+    <div class="card">
+      <h3 style="margin-top:0; color: var(--success); font-size: 1.3rem; font-weight: 700; margin-bottom: 0.4rem;">✅ Daftar Aspirasi</h3>
+      <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1rem;">Daftar laporan yang telah berhasil diselesaikan beserta ulasan kepuasan pelapor.</p>
+      
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Kategori & Judul</th>
+              <th>Lokasi</th>
+              <th>Bukti Foto</th>
+              <th>Rating & Komentar Pengguna</th>
+            </tr>
+          </thead>
+          <tbody id="tabelSelesaiBody">
+            <tr><td colspan="4" style="text-align:center; color: var(--text-muted);">Memuat data aspirasi selesai...</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
-  <!-- HALAMAN 2: FORMULIR PENGISIAN DATA -->
+  <!-- HALAMAN VERIFIKASI NAMA & NIM -->
+  <div id="page-verifikasi" class="hidden">
+    <button type="button" class="back-link" onclick="showHome()">⬅ Kembali ke Beranda</button>
+    <div class="card">
+      <h3 style="margin-top:0; color: var(--primary); font-size: 1.5rem; font-weight: 700;">🔒 Verifikasi Identitas Siswa</h3>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">Masukkan NIM dan Nama lengkap untuk mengakses formulir pengaduan.</p>
+      
+      <label>Nomor Induk Mahasiswa (NIM)</label>
+      <input type="text" id="inputNim" placeholder="Contoh: 23002093" style="font-family: monospace; font-weight: bold;">
+
+      <label>Nama Lengkap</label>
+      <input type="text" id="inputNama" placeholder="Contoh: Fahma Hakim">
+
+      <button type="button" class="btn btn-main" id="btnVerifikasi" onclick="prosesVerifikasi()" style="width:100%; margin-top:0.5rem;">Verifikasi & Lanjutkan</button>
+    </div>
+  </div>
+
+  <!-- HALAMAN 2: FORMULIR PENGISIAN -->
   <div id="page-form" class="hidden">
-    <button onclick="showHome()" style="background:none; border:none; color:var(--primary); font-weight:bold; cursor:pointer; margin-bottom:1rem; font-size:1rem;">⬅ Kembali ke Beranda</button>
+    <button type="button" class="back-link" onclick="showHome()">⬅ Keluar / Beranda</button>
     
     <div class="card">
-      <h3 style="margin-top:0; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem;">Formulir Aspirasi Siswa</h3>
+      <h3 style="margin-top:0; border-bottom: 1px solid var(--border); padding-bottom: 1.2rem; font-size: 1.5rem; font-weight: 700;">Formulir Aspirasi Siswa</h3>
       
-      <div style="background: #f1f5f9; padding: 1rem; border-radius: 8px; text-align: center; margin-bottom: 1.5rem;">
-        <span style="font-size: 0.9rem; color: #64748b;">Kode Tiket Unik Anda (Otomatis):</span><br>
-        <strong id="kodeTiket" style="color:var(--primary); font-size:2rem; letter-spacing: 5px; font-family: monospace;"></strong>
+      <div style="background: #f8fafc; padding: 1.5rem; border-radius: 20px; text-align: center; margin-bottom: 1.5rem; border: 2px dashed #cbd5e1;">
+        <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;">Kode Tiket Unik Anda:</span><br>
+        <strong id="kodeTiket" style="color:var(--accent); font-size:2.4rem; letter-spacing: 6px; font-family: monospace;"></strong>
       </div>
       
       <label>Kategori Laporan</label>
       <select id="kategori">
         <option value="Pembelajaran">Pembelajaran</option>
-        <option value="Perundungan/Kekerasan">Perundungan/Kekerasan</option>
-        <option value="Fasilitas">Fasilitas</option>
+        <option value="Perundungan/Kekerasan">Perundungan / Kekerasan</option>
+        <option value="Fasilitas">Fasilitas Sekolah</option>
         <option value="Lainnya">Lainnya</option>
       </select>
 
       <label>Judul Laporan</label>
-      <input type="text" id="judul" placeholder="Singkat dan jelas (Contoh: Keran air toilet rusak)">
+      <input type="text" id="judul" placeholder="Ringkasan singkat permasalahan">
 
       <label>Isi Laporan / Penjelasan Detail</label>
       <textarea id="isi" rows="5" placeholder="Ceritakan fakta secara objektif..."></textarea>
 
-      <label>Tanggal Kejadian (Opsional)</label>
+      <label>Tanggal Kejadian</label>
       <input type="date" id="tanggal">
 
-      <label>Kontak yang bisa ingin dihubungi)</label>
-      <input type="text" id="kontak" placeholder="No WA / Media Sosial">
+      <label>Lokasi Kejadian</label>
+      <input type="text" id="lokasi" placeholder="Contoh: Kantin Sekolah / Lab Komputer 2">
 
-      <!-- Verifikasi Captcha Mencegah Bot -->
-      <div style="background: #fff1f2; border: 1px solid #fecdd3; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
-        <label style="color: #be123c; margin-bottom:0.3rem; display:block;">Verifikasi Keamanan (Cegah Bot): <b id="captchaPertanyaan"></b></label>
-        <input type="number" id="captchaJawaban" placeholder="Masukkan hasil penjumlahan di atas..." style="margin-bottom:0;">
-      </div>
+      <label>Unggah Foto Bukti </label>
+      <input type="file" id="fotoBukti" accept="image/*">
 
-      <button class="btn btn-primary" id="btnKirim" onclick="kirimForm()">Kirim Laporan Secara Anonim</button>
+      <label>Kontak yang Bisa Dihubungi</label>
+      <input type="text" id="kontak" placeholder="No WhatsApp">
+
+      <button type="button" class="btn btn-main" id="btnKirim" onclick="kirimForm()" style="width:100%;">Kirim Laporan Sekarang</button>
     </div>
   </div>
 
-  <!-- HALAMAN 3: LAYAR SUKSES & PENGINGAT KODE -->
+  <!-- HALAMAN 3: LAYAR SUKSES -->
   <div id="page-sukses" class="hidden">
     <div class="card" style="text-align: center;">
-      <h2 style="color: #166534; margin-bottom: 0.5rem;">🎉 Laporan Berhasil Dikirim!</h2>
-      <p style="color: #64748b;">Terima kasih, suara dan aspirasimu telah tercatat di sistem.</p>
+      <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">🎉</div>
+      <h2 style="color: #166534; margin-bottom: 0.5rem; font-size: 1.8rem; font-weight: 800;">Laporan Berhasil Terkirim!</h2>
+      <p style="color: var(--text-muted); font-size: 0.98rem;">Suara dan aspirasimu telah diamankan di dalam sistem database.</p>
       
-      <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin: 1.5rem 0;">
-        <span style="font-size: 0.85rem; color: #64748b;">KODE TIKET ANDA:</span><br>
-        <strong id="kodeFinal" style="font-size: 2.5rem; color: var(--primary); font-family: monospace; letter-spacing: 4px;"></strong>
+      <div style="background: #f8fafc; padding: 1.5rem; border-radius: 20px; margin: 1.8rem 0; border: 1px solid var(--border);">
+        <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; letter-spacing: 1.5px;">KODE TIKET ANDA:</span><br>
+        <strong id="kodeFinal" style="font-size: 2.8rem; color: var(--accent); font-family: monospace; letter-spacing: 6px;"></strong>
       </div>
 
-      <!-- INTRUKSI / PERINGATAN TEGAS UNTUK MENGINGAT KODE -->
-      <div style="background: #fef3c7; border: 2px dashed #f59e0b; padding: 1.2rem; border-radius: 12px; margin-bottom: 1.5rem; text-align: left;">
-        <h4 style="color: #b45309; margin-bottom: 0.4rem;">⚠️ PERINGATAN PENTING:</h4>
-        <p style="font-size: 0.9rem; color: #78350f; margin: 0;">
-          Harap catat, salin, atau <b>Screenshot (Tangkapan Layar)</b> kode tiket di atas! Karena sistem kami berbasis anonim dan tidak menggunakan akun, <b>jika kamu lupa kodenya, kamu tidak akan bisa melacak status laporanmu</b>.
+      <div style="background: #fef3c7; border: 1.5px solid #fcd34d; padding: 1.5rem; border-radius: 20px; margin-bottom: 1.8rem; text-align: left;">
+        <h4 style="color: #92400e; margin: 0 0 0.5rem 0; font-size: 0.98rem; display:flex; align-items:center; gap:0.4rem;">⚠️ PERINGATAN PENTING:</h4>
+        <p style="font-size: 0.9rem; color: #78350f; margin: 0; line-height: 1.5;">
+          Harap catat atau <b>Screenshot (Tangkapan Layar)</b> kode tiket di atas! Karena sistem anonim, <b>jika lupa kodenya, status laporan tidak dapat dilacak kembali</b>.
         </p>
       </div>
 
-      <button class="btn btn-primary" onclick="showHome()">Kembali ke Beranda</button>
+      <button type="button" class="btn btn-main" onclick="showHome()" style="width:100%;">Kembali ke Beranda</button>
     </div>
   </div>
 
 </div>
 
 <script>
-  // PENTING: Ganti dengan URL Deploy Apps Script Google Sheets Anda
-  var URL_APP = "https://script.google.com/macros/s/AKfycbwlZUniv7zdhKkzE830Zxghsc2uRbcmAnuW29QWlQGGygpZN5pOzY8HlzdCjBEvnIl6vQ/exec"; 
-  var captchaBenar = 0;
+  var URL_APP = "https://script.google.com/macros/s/AKfycbwlZUniv7zdhKkzE830Zxghsc2uRbcmAnuW29QWlQGGygpZN5pOzY8HlzdCjBEvnIl6vQ/exec";
+
+  function initApp() {
+    loadTabelSelesai();
+  }
 
   function buatKode() { 
     var cs = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789", out = "";
@@ -128,67 +210,120 @@
     return out;
   }
   
-  function showForm() { 
-    document.getElementById('page-home').classList.add('hidden'); 
+  function showVerifikasi() {
+    document.getElementById('page-home').classList.add('hidden');
+    document.getElementById('page-form').classList.add('hidden');
     document.getElementById('page-sukses').classList.add('hidden');
-    document.getElementById('page-form').classList.remove('hidden');
-    document.getElementById('kodeTiket').innerText = buatKode();
-    generateCaptcha();
+    document.getElementById('page-verifikasi').classList.remove('hidden');
+    document.getElementById('inputNim').value = "";
+    document.getElementById('inputNama').value = "";
   }
-  
+
   function showHome() { 
     document.getElementById('page-form').classList.add('hidden'); 
     document.getElementById('page-sukses').classList.add('hidden');
+    document.getElementById('page-verifikasi').classList.add('hidden');
     document.getElementById('page-home').classList.remove('hidden'); 
+    loadTabelSelesai();
   }
-  
-  function generateCaptcha() {
-    var a = Math.floor(Math.random() * 10) + 1;
-    var b = Math.floor(Math.random() * 10) + 1;
-    captchaBenar = a + b;
-    document.getElementById('captchaPertanyaan').innerText = a + " + " + b + " = ?";
-    document.getElementById('captchaJawaban').value = "";
+
+  function prosesVerifikasi() {
+    var nim = document.getElementById('inputNim').value.trim();
+    var nama = document.getElementById('inputNama').value.trim();
+    #kodeTiket
+    document.getElementById('kodetiket').innerText = buatKode();
+    
+    if(!nim || !nama) {
+      alert("NIM dan Nama wajib diisi!"); 
+      return;
+    }
+
+    var btn = document.getElementById('btnVerifikasi');
+    var originalText = btn.innerText;
+    btn.innerText = "Memeriksa Data... ⏳"; 
+    btn.disabled = true;
+
+    fetch(URL_APP + "?action=cek_siswa&nim=" + encodeURIComponent(nim) + "&nama=" + encodeURIComponent(nama))
+    .then(r => r.json())
+    .then(d => {
+      btn.innerText = originalText; 
+      btn.disabled = false;
+      if(d.status === "success") {
+        document.getElementById('page-verifikasi').classList.add('hidden');
+        document.getElementById('page-form').classList.remove('hidden');
+        document.getElementById('kodeTiket').innerText = buatKode();
+      } else {
+        alert("❌ Akses Ditolak! NIM atau Nama tidak terdaftar dalam database mahasiswa.");
+      }
+    })
+    .catch(e => {
+      btn.innerText = originalText; 
+      btn.disabled = false;
+      alert("Gagal terhubung ke server.");
+    });
   }
 
   function kirimForm() {
     var judul = document.getElementById('judul').value.trim();
     var isi = document.getElementById('isi').value.trim();
-    if (judul === "" || isi === "") {
-      alert("Judul dan Isi Laporan wajib diisi dengan lengkap!"); return;
-    }
-    if (parseInt(document.getElementById('captchaJawaban').value) !== captchaBenar) { 
-      alert("Jawaban verifikasi keamanan (Captcha) salah!"); return; 
+    var kodeUnik = document.getElementById('kodetiket') .innerText;
+    // terukan variabel unik ke fungsi pengiriman data
+    kirimDataBackend(kodeUnik, judul, isi, lokasi, fotoBase64, btn, originalText);
+    if (judul === "" || isi === "") { 
+      alert("Judul dan Isi Laporan wajib diisi!"); 
+      return; 
     }
     
     var btn = document.getElementById('btnKirim');
-    btn.innerText = "Mengirim Data ke Sistem... ⏳"; btn.disabled = true;
+    var originalText = btn.innerText;
+    btn.innerText = "Mengirim Laporan... ⏳"; 
+    btn.disabled = true;
 
     var kodeUnik = document.getElementById('kodeTiket').innerText;
+    var lokasi = document.getElementById('lokasi').value.trim();
+    
+    var fileInput = document.getElementById('fotoBukti');
+    if (fileInput.files.length > 0) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        kirimDataBackend(kodeUnik, judul, isi, lokasi, e.target.result, btn, originalText);
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    } else {
+      kirimDataBackend(kodeUnik, judul, isi, lokasi, "", btn, originalText);
+    }
+  }
+
+  function kirimDataBackend(kode, judul, isi, lokasi, fotoBase64, btn, originalText) {
     var payload = {
-      kode: kodeUnik,
+      kode: kode,
       kategori: document.getElementById('kategori').value,
       judul: judul,
       isi: isi,
-      tanggal: document.getElementById('tanggal').value,
+      lokasi: lokasi,
+      foto: fotoBase64,
       kontak: document.getElementById('kontak').value
     };
 
-    // Kirim data secara asinkron ke Google Sheets via Apps Script
     fetch(URL_APP, { method: "POST", body: JSON.stringify(payload) })
     .then(r => r.json())
     .then(d => {
       document.getElementById('page-form').classList.add('hidden');
       document.getElementById('page-sukses').classList.remove('hidden');
-      document.getElementById('kodeFinal').innerText = kodeUnik;
-      btn.innerText = "Kirim Laporan Secara Anonim"; 
+      document.getElementById('kodeFinal').innerText = kode;
+      btn.innerText = originalText; 
       btn.disabled = false;
-      // Reset form
       document.getElementById('judul').value = "";
       document.getElementById('isi').value = "";
+      document.getElementById('lokasi').value = "";
+      document.getElementById('fotoBukti').value = "";
+      document.getElementById('page-form').classList.add('hidden');
+      document.getElementById('page-sukses').classList.remove('hidden');
+      document.getElementById('kodefinal').innerText = kode;
     })
     .catch(e => {
-      alert("Gagal terhubung ke jaringan server. Coba beberapa saat lagi.");
-      btn.innerText = "Kirim Laporan Secara Anonim"; 
+      alert("Gagal mengirim laporan.");
+      btn.innerText = originalText; 
       btn.disabled = false;
     });
   }
@@ -196,40 +331,124 @@
   function cekStatus() {
     var kode = document.getElementById('cekKode').value.trim().toUpperCase();
     var hasilDiv = document.getElementById('hasilCek');
+    if(!kode) { 
+      alert("Masukkan kode tiket terlebih dahulu!"); 
+      return; 
+    }
     
-    if(kode === "") { alert("Masukkan kode tiket terlebih dahulu!"); return; }
-    
-    hasilDiv.innerHTML = "<i>⏳ Sedang memuat data dari database...</i>"; 
+    hasilDiv.innerHTML = "<i>⏳ Memeriksa database...</i>"; 
     hasilDiv.classList.remove('hidden');
 
     fetch(URL_APP + "?action=cek&kode=" + kode)
     .then(r => r.json())
     .then(d => {
       if(d.status === "success") {
+        var ulasanSection = "";
+        if(d.data.status.toLowerCase() === "selesai") {
+          if (d.data.rating && d.data.rating !== "") {
+            ulasanSection = `
+              <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed #bbf7d0;">
+                <p style="font-size: 0.88rem; font-weight: 600; color: #166534; margin-bottom: 0.2rem;">⭐ Ulasan yang Telah Anda Kirim:</p>
+                <div class="rating-stars">${'★'.repeat(d.data.rating)}</div>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.2rem 0 0 0;">"${d.data.ulasan}"</p>
+              </div>
+            `;
+          } else {
+            ulasanSection = `
+              <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed #bbf7d0;">
+                <p style="font-size: 0.88rem; font-weight: 600; color: #166534; margin-bottom: 0.4rem;">⭐ Berikan Kepuasan Layanan Anda:</p>
+                <select id="inputRating" style="margin-bottom: 0.5rem; padding: 0.5rem;">
+                  <option value="5">⭐⭐⭐⭐⭐ (Sangat Puas)</option>
+                  <option value="4">⭐⭐⭐⭐ (Puas)</option>
+                  <option value="3">⭐⭐⭐ (Cukup)</option>
+                  <option value="2">⭐⭐ (Kurang)</option>
+                  <option value="1">⭐ (Sangat Kurang)</option>
+                </select>
+                <textarea id="inputKomentar" rows="2" placeholder="Tuliskan pengalaman atau ulasan perbaikan..." style="margin-bottom: 0.5rem;"></textarea>
+                <button type="button" class="btn btn-main" onclick="kirimUlasan('${kode}')" style="padding: 0.6rem 1rem; font-size: 0.85rem; width: 100%;">Kirim Ulasan & Rating</button>
+              </div>
+            `;
+          }
+        }
+
         hasilDiv.innerHTML = `
-          <div style="margin-bottom:0.8rem; padding-bottom:0.8rem; border-bottom: 1px solid #cbd5e1;">
-            <small style="color:#64748b;">Judul Laporan (${d.data.kategori}):</small><br>
-            <strong>${d.data.judul}</strong>
-          </div>
-          <div style="margin-bottom:0.8rem;">
-            <small style="color:#64748b;">Isi Aspirasi:</small><br>
-            ${d.data.isi}
-          </div>
-          <div style="margin-bottom:0.8rem;">
-            <small style="color:#64748b;">Status Saat Ini:</small><br>
-            <span style="display:inline-block; padding: 0.3rem 0.8rem; background: #fef08a; color: #854d0e; border-radius: 20px; font-weight:bold; font-size:0.9rem;">${d.data.status}</span>
-          </div>
-          <div>
-            <small style="color:#64748b;">Progress / Tindak Lanjut Sekolah:</small><br>
-            <p style="margin:0.2rem 0 0 0; color:#334155;">${d.data.progress}</p>
-          </div>
+          <div style="margin-bottom:0.5rem; font-size: 0.95rem;"><b>Judul:</b> ${d.data.judul} (${d.data.kategori})</div>
+          <div style="margin-bottom:0.5rem; font-size: 0.95rem;"><b>Status:</b> <span style="background:#dcfce7; padding:0.2rem 0.8rem; border-radius:10px; font-weight:bold; color:#166534;">${d.data.status}</span></div>
+          <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;"><b>Progress:</b> ${d.data.progress}</div>
+          ${ulasanSection}
         `;
       } else {
-        hasilDiv.innerHTML = `<span style="color:#dc2626;">❌ Kode tiket <b>${kode}</b> tidak ditemukan. Pastikan kodenya benar.</span>`;
+        hasilDiv.innerHTML = `<span style="color:red; font-size: 0.95rem;">❌ Kode tiket tidak ditemukan di sistem.</span>`;
       }
     })
     .catch(e => {
-      hasilDiv.innerHTML = `<span style="color:#dc2626;">❌ Gagal terhubung ke server database.</span>`;
+      hasilDiv.innerHTML = `<span style="color:red; font-size: 0.95rem;">❌ Gagal terhubung ke server.</span>`;
+    });
+  }
+
+  function kirimUlasan(kodeTiket) {
+    var rating = document.getElementById('inputRating').value;
+    var komentar = document.getElementById('inputKomentar').value.trim();
+
+    if (!komentar) {
+      alert("Mohon tuliskan komentar pengalaman Anda!");
+      return;
+    }
+
+    var payload = {
+      action: "beri_ulasan",
+      kode: kodeTiket,
+      rating: rating,
+      komentar: komentar
+    };
+
+    fetch(URL_APP, { method: "POST", body: JSON.stringify(payload) })
+    .then(r => r.json())
+    .then(d => {
+      if(d.status === "success") {
+        alert("Terima kasih! Ulasan dan rating Anda berhasil disimpan.");
+        cekStatus();
+        loadTabelSelesai();
+      } else {
+        alert("Gagal mengirim ulasan.");
+      }
+    })
+    .catch(e => {
+      alert("Terjadi kesalahan jaringan.");
+    });
+  }
+
+  function loadTabelSelesai() {
+    fetch(URL_APP + "?action=selesai")
+    .then(r => r.json())
+    .then(d => {
+      if (d.status === "success") {
+        var tbody = document.getElementById('tabelSelesaiBody');
+        if (d.data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: var(--text-muted);">Belum ada aspirasi yang selesai diulas.</td></tr>`;
+          return;
+        }
+        var html = "";
+        d.data.forEach(item => {
+          var fotoLink = item.foto !== "-" && item.foto !== "" ? `<a href="${item.foto}" target="_blank" style="color: var(--accent); font-weight: 600; text-decoration:none;">Lihat Foto</a>` : `<span style="color:var(--text-muted);">Tidak ada</span>`;
+          var bintang = '★'.repeat(Number(item.rating) || 5);
+          html += `
+            <tr>
+              <td><strong>${item.kategori}</strong><br><span style="font-size:0.82rem; color: var(--text-muted);">${item.judul}</span></td>
+              <td>${item.lokasi}</td>
+              <td>${fotoLink}</td>
+              <td>
+                <div class="rating-stars">${bintang}</div>
+                <p style="margin: 0.2rem 0 0 0; font-size: 0.82rem; color: var(--text-muted);">"${item.ulasan}"</p>
+              </td>
+            </tr>
+          `;
+        });
+        tbody.innerHTML = html;
+      }
+    })
+    .catch(e => {
+      console.error("Gagal memuat tabel selesai");
     });
   }
 </script>
