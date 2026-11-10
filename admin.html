@@ -34,7 +34,7 @@
   <div id="dataArea" style="display:none;">
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
       <p style="margin:0; color:#64748b;">Kelola dan pantau seluruh aspirasi siswa secara real-time.</p>
-      <a href="https://docs.google.com/spreadsheets/d/1mf0KxqlSyZFymKtjr1n1vJUduzz-YIP_lmlerhgj-MY/edit?usp=sharing" target="_blank" style="background:#10b981; color:white; padding:0.6rem 1.5rem; text-decoration:none; border-radius:8px; font-weight:bold; font-size:0.9rem;">Buka Google Sheets (Edit Status)</a>
+      <a href="https://docs.google.com/spreadsheets/d/1mf0KxqlSyZFymKtjr1n1vJUduzz-YIP_lmlerhgj-MY/edit" target="_blank" style="background:#10b981; color:white; padding:0.6rem 1.5rem; text-decoration:none; border-radius:8px; font-weight:bold; font-size:0.9rem;">Buka Google Sheets (Edit Status)</a>
     </div>
     
     <table>
@@ -68,12 +68,12 @@
         document.getElementById('dataArea').style.display = "block";
         
         var html = "";
-        if (d.data.length === 0) {
+        if (!d.data || d.data.length === 0) {
           html = `<tr><td colspan="4" style="text-align:center; color:#64748b;">Belum ada laporan masuk.</td></tr>`;
         } else {
           d.data.forEach(item => {
             var badgeClass = "diterima";
-            var st = (item.status || "").toLowerCase();
+            var st = (item.status || "").toString().toLowerCase();
             if (st.includes("proses")) badgeClass = "diproses";
             if (st.includes("selesai")) badgeClass = "selesai";
 
