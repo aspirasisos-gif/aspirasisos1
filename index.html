@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aspirasisos - Layanan Aspirasi dan Pengaduan Siswa Anonim</title>
+<style>
+  :root { --bg: #f8fafc; --surface: #ffffff; --primary: #4f46e5; --danger: #ef4444; --text: #1e293b; --border: #cbd5e1; }
+  body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 1.5rem; }
+  .container { max-width: 650px; margin: 0 auto; }
+  .card { background: var(--surface); padding: 2rem; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 1.5rem; border: 1px solid var(--border); }
+  .header { text-align: center; margin-bottom: 2rem; }
+  .header h2 { font-size: 2.2rem; margin-bottom: 0.5rem; color: #0f172a; font-weight: 800; }
+  .slogan { color: #64748b; font-style: italic; font-size: 1.05rem; }
+  .btn { display: block; width: 100%; padding: 1rem; border-radius: 12px; font-weight: bold; font-size: 1.1rem; border: none; cursor: pointer; text-align: center; color: white; text-decoration: none; margin-bottom: 1rem; transition: 0.2s; }
+  .btn-primary { background: var(--primary); }
+  .btn-primary:hover { background: #4338ca; transform: translateY(-2px); }
+  .btn-danger { background: var(--danger); }
+  .btn-danger:hover { background: #dc2626; transform: translateY(-2px); }
+  input, select, textarea { width: 100%; padding: 0.8rem; margin-top: 0.5rem; margin-bottom: 1rem; border: 2px solid var(--border); border-radius: 8px; box-sizing: border-box; font-size: 1rem; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
+  .hidden { display: none; }
+  .status-box { background: #e0e7ff; padding: 1.5rem; border-radius: 12px; margin-top: 1rem; border-left: 5px solid var(--primary); }
+</style>
+</head>
+<body>
+
+<div class="container">
+  
+  <!-- HALAMAN 1: LANDING PAGE -->
+  <div id="page-home">
+    <div class="header">
+      <h2>Aspirasisos</h2>
+      <p class="slogan">"Karena suara siswa adalah milik bersama dan layak didengar."</p>
+    </div>
+    
+    <div class="card" style="background:#eff6ff; border-color: #bfdbfe;">
+      <p style="margin:0; font-size:0.95rem; color: #1e40af;">🔒 <b>Jaminan Kerahasiaan:</b> Laporan tanpa identitas. Hanya Wakil Kepala Sekolah dan Guru BK yang memiliki akses untuk membaca laporanmu.</p>
+    </div>
+
+    <button class="btn btn-primary" onclick="showForm()">✍️ Kirim Saran / Keluhan</button>
+    <a href="https://wa.me/6281234567890?text=Halo%20Bapak/Ibu%20Guru%20BK,%20saya%20butuh%20bantuan%20darurat." class="btn btn-danger" target="_blank">🚨 Saluran Darurat (WhatsApp BK)</a>
+
+    <div class="card">
+      <h3 style="margin-top:0;">🔍 Cek Status Laporan</h3>
+      <p style="font-size: 0.9rem; color: #64748b;">Masukkan kode tiketmu untuk melihat progress tindak lanjut.</p>
+      <input type="text" id="cekKode" placeholder="Contoh: A8X9KL" maxlength="6" style="font-family: monospace; text-transform: uppercase;">
+      <button class="btn btn-primary" onclick="cekStatus()" style="width:auto; padding: 0.8rem 2rem;">Cek Status</button>
+      <div id="hasilCek" class="hidden status-box"></div>
+    </div>
+  </div>
+
+  <!-- HALAMAN 2: FORMULIR PENGISIAN DATA -->
+  <div id="page-form" class="hidden">
+    <button onclick="showHome()" style="background:none; border:none; color:var(--primary); font-weight:bold; cursor:pointer; margin-bottom:1rem; font-size:1rem;">⬅ Kembali ke Beranda</button>
+    
+    <div class="card">
+      <h3 style="margin-top:0; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem;">Formulir Aspirasi Siswa</h3>
+      
+      <div style="background: #f1f5f9; padding: 1rem; border-radius: 8px; text-align: center; margin-bottom: 1.5rem;">
+        <span style="font-size: 0.9rem; color: #64748b;">Kode Tiket Unik Anda (Otomatis):</span><br>
+        <strong id="kodeTiket" style="color:var(--primary); font-size:2rem; letter-spacing: 5px; font-family: monospace;"></strong>
+      </div>
+      
+      <label>Kategori Laporan</label>
+      <select id="kategori">
+        <option value="Pembelajaran">Pembelajaran</option>
+        <option value="Perundungan/Kekerasan">Perundungan/Kekerasan</option>
+        <option value="Fasilitas">Fasilitas</option>
+        <option value="Lainnya">Lainnya</option>
+      </select>
+
+      <label>Judul Laporan</label>
+      <input type="text" id="judul" placeholder="Singkat dan jelas (Contoh: Keran air toilet rusak)">
+
+      <label>Isi Laporan / Penjelasan Detail</label>
+      <textarea id="isi" rows="5" placeholder="Ceritakan fakta secara objektif..."></textarea>
+
+      <label>Tanggal Kejadian (Opsional)</label>
+      <input type="date" id="tanggal">
+
+      <label>Kontak (Opsional - Jika ingin dihubungi)</label>
+      <input type="text" id="kontak" placeholder="No WA / Media Sosial">
+
+      <!-- Verifikasi Captcha Mencegah Bot -->
+      <div style="background: #fff1f2; border: 1px solid #fecdd3; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+        <label style="color: #be123c; margin-bottom:0.3rem; display:block;">Verifikasi Keamanan (Cegah Bot): <b id="captchaPertanyaan"></b></label>
+        <input type="number" id="captchaJawaban" placeholder="Masukkan hasil penjumlahan di atas..." style="margin-bottom:0;">
+      </div>
+
+      <button class="btn btn-primary" id="btnKirim" onclick="kirimForm()">Kirim Laporan Secara Anonim</button>
+    </div>
+  </div>
+
+  <!-- HALAMAN 3: LAYAR SUKSES & PENGINGAT KODE -->
+  <div id="page-sukses" class="hidden">
+    <div class="card" style="text-align: center;">
+      <h2 style="color: #166534; margin-bottom: 0.5rem;">🎉 Laporan Berhasil Dikirim!</h2>
+      <p style="color: #64748b;">Terima kasih, suara dan aspirasimu telah tercatat di sistem.</p>
+      
+      <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin: 1.5rem 0;">
+        <span style="font-size: 0.85rem; color: #64748b;">KODE TIKET ANDA:</span><br>
+        <strong id="kodeFinal" style="font-size: 2.5rem; color: var(--primary); font-family: monospace; letter-spacing: 4px;"></strong>
+      </div>
+
+      <!-- INTRUKSI / PERINGATAN TEGAS UNTUK MENGINGAT KODE -->
+      <div style="background: #fef3c7; border: 2px dashed #f59e0b; padding: 1.2rem; border-radius: 12px; margin-bottom: 1.5rem; text-align: left;">
+        <h4 style="color: #b45309; margin-bottom: 0.4rem;">⚠️ PERINGATAN PENTING:</h4>
+        <p style="font-size: 0.9rem; color: #78350f; margin: 0;">
+          Harap catat, salin, atau <b>Screenshot (Tangkapan Layar)</b> kode tiket di atas! Karena sistem kami berbasis anonim dan tidak menggunakan akun, <b>jika kamu lupa kodenya, kamu tidak akan bisa melacak status laporanmu</b>.
+        </p>
+      </div>
+
+      <button class="btn btn-primary" onclick="showHome()">Kembali ke Beranda</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // PENTING: Ganti dengan URL Deploy Apps Script Google Sheets Anda
+  var URL_APP = "https://script.google.com/macros/s/AKfycbyGHNRalbbM1ZKKpz5ufeC8lho8F9tf0Gv-azGdASoS2HT_MmcMU4bF9deXNia2WGs5/exec"; 
+  var captchaBenar = 0;
+
+  function buatKode() { 
+    var cs = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789", out = "";
+    for (var i = 0; i < 6; i++) out += cs.charAt(Math.floor(Math.random() * cs.length));
+    return out;
+  }
+  
+  function showForm() { 
+    document.getElementById('page-home').classList.add('hidden'); 
+    document.getElementById('page-sukses').classList.add('hidden');
+    document.getElementById('page-form').classList.remove('hidden');
+    document.getElementById('kodeTiket').innerText = buatKode();
+    generateCaptcha();
+  }
+  
+  function showHome() { 
+    document.getElementById('page-form').classList.add('hidden'); 
+    document.getElementById('page-sukses').classList.add('hidden');
+    document.getElementById('page-home').classList.remove('hidden'); 
+  }
+  
+  function generateCaptcha() {
+    var a = Math.floor(Math.random() * 10) + 1;
+    var b = Math.floor(Math.random() * 10) + 1;
+    captchaBenar = a + b;
+    document.getElementById('captchaPertanyaan').innerText = a + " + " + b + " = ?";
+    document.getElementById('captchaJawaban').value = "";
+  }
+
+  function kirimForm() {
+    var judul = document.getElementById('judul').value.trim();
+    var isi = document.getElementById('isi').value.trim();
+    if (judul === "" || isi === "") {
+      alert("Judul dan Isi Laporan wajib diisi dengan lengkap!"); return;
+    }
+    if (parseInt(document.getElementById('captchaJawaban').value) !== captchaBenar) { 
+      alert("Jawaban verifikasi keamanan (Captcha) salah!"); return; 
+    }
+    
+    var btn = document.getElementById('btnKirim');
+    btn.innerText = "Mengirim Data ke Sistem... ⏳"; btn.disabled = true;
+
+    var kodeUnik = document.getElementById('kodeTiket').innerText;
+    var payload = {
+      kode: kodeUnik,
+      kategori: document.getElementById('kategori').value,
+      judul: judul,
+      isi: isi,
+      tanggal: document.getElementById('tanggal').value,
+      kontak: document.getElementById('kontak').value
+    };
+
+    // Kirim data secara asinkron ke Google Sheets via Apps Script
+    fetch(URL_APP, { method: "POST", body: JSON.stringify(payload) })
+    .then(r => r.json())
+    .then(d => {
+      document.getElementById('page-form').classList.add('hidden');
+      document.getElementById('page-sukses').classList.remove('hidden');
+      document.getElementById('kodeFinal').innerText = kodeUnik;
+      btn.innerText = "Kirim Laporan Secara Anonim"; 
+      btn.disabled = false;
+      // Reset form
+      document.getElementById('judul').value = "";
+      document.getElementById('isi').value = "";
+    })
+    .catch(e => {
+      alert("Gagal terhubung ke jaringan server. Coba beberapa saat lagi.");
+      btn.innerText = "Kirim Laporan Secara Anonim"; 
+      btn.disabled = false;
+    });
+  }
+
+  function cekStatus() {
+    var kode = document.getElementById('cekKode').value.trim().toUpperCase();
+    var hasilDiv = document.getElementById('hasilCek');
+    
+    if(kode === "") { alert("Masukkan kode tiket terlebih dahulu!"); return; }
+    
+    hasilDiv.innerHTML = "<i>⏳ Sedang memuat data dari database...</i>"; 
+    hasilDiv.classList.remove('hidden');
+
+    fetch(URL_APP + "?action=cek&kode=" + kode)
+    .then(r => r.json())
+    .then(d => {
+      if(d.status === "success") {
+        hasilDiv.innerHTML = `
+          <div style="margin-bottom:0.8rem; padding-bottom:0.8rem; border-bottom: 1px solid #cbd5e1;">
+            <small style="color:#64748b;">Judul Laporan (${d.data.kategori}):</small><br>
+            <strong>${d.data.judul}</strong>
+          </div>
+          <div style="margin-bottom:0.8rem;">
+            <small style="color:#64748b;">Isi Aspirasi:</small><br>
+            ${d.data.isi}
+          </div>
+          <div style="margin-bottom:0.8rem;">
+            <small style="color:#64748b;">Status Saat Ini:</small><br>
+            <span style="display:inline-block; padding: 0.3rem 0.8rem; background: #fef08a; color: #854d0e; border-radius: 20px; font-weight:bold; font-size:0.9rem;">${d.data.status}</span>
+          </div>
+          <div>
+            <small style="color:#64748b;">Progress / Tindak Lanjut Sekolah:</small><br>
+            <p style="margin:0.2rem 0 0 0; color:#334155;">${d.data.progress}</p>
+          </div>
+        `;
+      } else {
+        hasilDiv.innerHTML = `<span style="color:#dc2626;">❌ Kode tiket <b>${kode}</b> tidak ditemukan. Pastikan kodenya benar.</span>`;
+      }
+    })
+    .catch(e => {
+      hasilDiv.innerHTML = `<span style="color:#dc2626;">❌ Gagal terhubung ke server database.</span>`;
+    });
+  }
+</script>
+</body>
+</html>

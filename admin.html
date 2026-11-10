@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Dashboard - Aspirasisos</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #f1f5f9; padding: 1.5rem; margin:0; color: #1e293b; }
+  .container { max-width: 950px; margin: 0 auto; background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+  h2 { margin-top: 0; color: #4f46e5; border-bottom: 2px solid #e2e8f0; padding-bottom: 1rem; }
+  table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; font-size: 0.95rem; }
+  th, td { padding: 1rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+  th { background: #f8fafc; color: #475569; font-weight: bold; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
+  tr:hover { background: #f8fafc; }
+  .badge { padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+  .badge.diterima { background: #fee2e2; color: #dc2626; }
+  .badge.diproses { background: #fef08a; color: #854d0e; }
+  .badge.selesai { background: #dcfce7; color: #166534; }
+  input, button { padding: 0.8rem; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 1rem; }
+  button { background: #4f46e5; color: white; border: none; cursor: pointer; font-weight: bold; }
+  button:hover { background: #4338ca; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>🛡️ Dashboard Admin Aspirasisos</h2>
+  
+  <div id="loginArea" style="text-align: center; padding: 3rem 0;">
+    <p>Masukkan Kata Sandi Administrator:</p>
+    <input type="password" id="pass" placeholder="Password: admin123" style="text-align: center; margin-bottom: 1rem;"><br>
+    <button onclick="loadData()">Masuk ke Dashboard</button>
+  </div>
+  
+  <div id="dataArea" style="display:none;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <p style="margin:0; color:#64748b;">Kelola dan pantau seluruh aspirasi siswa secara real-time.</p>
+      <a href="https://docs.google.com/spreadsheets" target="_blank" style="background:#10b981; color:white; padding:0.6rem 1.5rem; text-decoration:none; border-radius:8px; font-weight:bold; font-size:0.9rem;">Buka Google Sheets (Edit Status)</a>
+    </div>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>Kode Tiket</th>
+          <th>Kategori</th>
+          <th>Judul Laporan</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="tabelBody">
+        <tr><td colspan="4" style="text-align:center;">Memuat data...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  // PENTING: Ganti dengan URL Deploy Apps Script Google Sheets Anda
+  var URL_APP = "https://script.google.com/macros/s/AKfycbyGHNRalbbM1ZKKpz5ufeC8lho8F9tf0Gv-azGdASoS2HT_MmcMU4bF9deXNia2WGs5/exec"; 
+
+  function loadData() {
+    var pass = document.getElementById('pass').value;
+    if (!pass) { alert("Masukkan password!"); return; }
+
+    fetch(URL_APP + "?action=admin&pass=" + encodeURIComponent(pass))
+    .then(r => r.json())
+    .then(d => {
+      if(d.status === "success") {
+        document.getElementById('loginArea').style.display = "none";
+        document.getElementById('dataArea').style.display = "block";
+        
+        var html = "";
+        if (d.data.length === 0) {
+          html = `<tr><td colspan="4" style="text-align:center; color:#64748b;">Belum ada laporan masuk.</td></tr>`;
+        } else {
+          d.data.forEach(item => {
+            var badgeClass = "diterima";
+            if (item.status.toLowerCase().includes("proses")) badgeClass = "diproses";
+            if (item.status.toLowerCase().includes("selesai")) badgeClass = "selesai";
+
+            html += `<tr>
+              <td><b style="font-family:monospace; color:#4f46e5;">${item.kode}</b></td>
+              <td>${item.kategori}</td>
+              <td>${item.judul}</td>
+              <td><span class="badge ${badgeClass}">${item.status}</span></td>
+            </tr>`;
+          });
+        }
+        document.getElementById('tabelBody').innerHTML = html;
+      } else {
+        alert("Kata sandi salah!");
+      }
+    })
+    .catch(e => {
+      alert("Gagal terhubung ke database server.");
+    });
+  }
+</script>
+</body>
+</html>
