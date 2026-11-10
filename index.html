@@ -230,8 +230,6 @@
   function prosesVerifikasi() {
     var nim = document.getElementById('inputNim').value.trim();
     var nama = document.getElementById('inputNama').value.trim();
-    #kodeTiket
-    document.getElementById('kodetiket').innerText = buatKode();
     
     if(!nim || !nama) {
       alert("NIM dan Nama wajib diisi!"); 
@@ -251,9 +249,10 @@
       if(d.status === "success") {
         document.getElementById('page-verifikasi').classList.add('hidden');
         document.getElementById('page-form').classList.remove('hidden');
+        // Kunci kode tiket 1 kali pada elemen HTML
         document.getElementById('kodeTiket').innerText = buatKode();
       } else {
-        alert("❌ Akses Ditolak! NIM atau Nama tidak terdaftar dalam database mahasiswa.");
+        alert("❌ Akses Ditolak! NIM atau Nama tidak terdaftar dalam database.");
       }
     })
     .catch(e => {
@@ -266,9 +265,7 @@
   function kirimForm() {
     var judul = document.getElementById('judul').value.trim();
     var isi = document.getElementById('isi').value.trim();
-    var kodeUnik = document.getElementById('kodetiket') .innerText;
-    // terukan variabel unik ke fungsi pengiriman data
-    kirimDataBackend(kodeUnik, judul, isi, lokasi, fotoBase64, btn, originalText);
+    
     if (judul === "" || isi === "") { 
       alert("Judul dan Isi Laporan wajib diisi!"); 
       return; 
@@ -279,10 +276,11 @@
     btn.innerText = "Mengirim Laporan... ⏳"; 
     btn.disabled = true;
 
+    // Ambil kode tiket unik yang sudah terkunci di layar form
     var kodeUnik = document.getElementById('kodeTiket').innerText;
     var lokasi = document.getElementById('lokasi').value.trim();
-    
     var fileInput = document.getElementById('fotoBukti');
+
     if (fileInput.files.length > 0) {
       var reader = new FileReader();
       reader.onload = function(e) {
@@ -300,29 +298,45 @@
       kategori: document.getElementById('kategori').value,
       judul: judul,
       isi: isi,
+      tanggal: document.getElementById('tanggal').value,
       lokasi: lokasi,
       foto: fotoBase64,
       kontak: document.getElementById('kontak').value
     };
 
-    fetch(URL_APP, { method: "POST", body: JSON.stringify(payload) })
+    // Gunakan URLSearchParams untuk menghindari error CORS Browser
+    var formData = new URLSearchParams();
+    formData.append("payload", JSON.stringify(payload));
+
+    fetch(URL_APP, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: formData
+    })
     .then(r => r.json())
     .then(d => {
-      document.getElementById('page-form').classList.add('hidden');
-      document.getElementById('page-sukses').classList.remove('hidden');
-      document.getElementById('kodeFinal').innerText = kode;
-      btn.innerText = originalText; 
-      btn.disabled = false;
-      document.getElementById('judul').value = "";
-      document.getElementById('isi').value = "";
-      document.getElementById('lokasi').value = "";
-      document.getElementById('fotoBukti').value = "";
-      document.getElementById('page-form').classList.add('hidden');
-      document.getElementById('page-sukses').classList.remove('hidden');
-      document.getElementById('kodefinal').innerText = kode;
+      if (d.status === "success") {
+        document.getElementById('page-form').classList.add('hidden');
+        document.getElementById('page-sukses').classList.remove('hidden');
+        document.getElementById('kodeFinal').innerText = kode;
+        
+        btn.innerText = originalText; 
+        btn.disabled = false;
+        
+        document.getElementById('judul').value = "";
+        document.getElementById('isi').value = "";
+        document.getElementById('lokasi').value = "";
+        document.getElementById('fotoBukti').value = "";
+        document.getElementById('tanggal').value = "";
+        document.getElementById('kontak').value = "";
+      } else {
+        alert("Gagal menyimpan laporan.");
+        btn.innerText = originalText; 
+        btn.disabled = false;
+      }
     })
     .catch(e => {
-      alert("Gagal mengirim laporan.");
+      alert("Gagal terhubung ke jaringan server.");
       btn.innerText = originalText; 
       btn.disabled = false;
     });
@@ -339,7 +353,7 @@
     hasilDiv.innerHTML = "<i>⏳ Memeriksa database...</i>"; 
     hasilDiv.classList.remove('hidden');
 
-    fetch(URL_APP + "?action=cek&kode=" + kode)
+    fetch(URL_APP + "?action=cek&kode=" + encodeURIComponent(kode))
     .then(r => r.json())
     .then(d => {
       if(d.status === "success") {
@@ -349,7 +363,7 @@
             ulasanSection = `
               <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed #bbf7d0;">
                 <p style="font-size: 0.88rem; font-weight: 600; color: #166534; margin-bottom: 0.2rem;">⭐ Ulasan yang Telah Anda Kirim:</p>
-                <div class="rating-stars">${'★'.repeat(d.data.rating)}</div>
+                <div class="rating-stars">${'★'.repeat(Number(d.data.rating))}</div>
                 <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.2rem 0 0 0;">"${d.data.ulasan}"</p>
               </div>
             `;
@@ -402,7 +416,14 @@
       komentar: komentar
     };
 
-    fetch(URL_APP, { method: "POST", body: JSON.stringify(payload) })
+    var formData = new URLSearchParams();
+    formData.append("payload", JSON.stringify(payload));
+
+    fetch(URL_APP, { 
+      method: "POST", 
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: formData 
+    })
     .then(r => r.json())
     .then(d => {
       if(d.status === "success") {
@@ -430,7 +451,7 @@
         }
         var html = "";
         d.data.forEach(item => {
-          var fotoLink = item.foto !== "-" && item.foto !== "" ? `<a href="${item.foto}" target="_blank" style="color: var(--accent); font-weight: 600; text-decoration:none;">Lihat Foto</a>` : `<span style="color:var(--text-muted);">Tidak ada</span>`;
+          var fotoLink = (item.foto !== "-" && item.foto !== "") ? `<a href="${item.foto}" target="_blank" style="color: var(--accent); font-weight: 600; text-decoration:none;">Lihat Foto</a>` : `<span style="color:var(--text-muted);">Tidak ada</span>`;
           var bintang = '★'.repeat(Number(item.rating) || 5);
           html += `
             <tr>
