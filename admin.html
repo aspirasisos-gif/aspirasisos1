@@ -34,7 +34,7 @@
   <div id="dataArea" style="display:none;">
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
       <p style="margin:0; color:#64748b;">Kelola dan pantau seluruh aspirasi siswa secara real-time.</p>
-      <a href="https://docs.google.com/spreadsheets" target="_blank" style="background:#10b981; color:white; padding:0.6rem 1.5rem; text-decoration:none; border-radius:8px; font-weight:bold; font-size:0.9rem;">Buka Google Sheets (Edit Status)</a>
+      <a href="https://docs.google.com/spreadsheets/d/1mf0KxqlSyZFymKtjr1n1vJUduzz-YIP_lmlerhgj-MY/edit?usp=sharing" target="_blank" style="background:#10b981; color:white; padding:0.6rem 1.5rem; text-decoration:none; border-radius:8px; font-weight:bold; font-size:0.9rem;">Buka Google Sheets (Edit Status)</a>
     </div>
     
     <table>
@@ -54,7 +54,6 @@
 </div>
 
 <script>
-  // PENTING: Ganti dengan URL Deploy Apps Script Google Sheets Anda
   var URL_APP = "https://script.google.com/macros/s/AKfycbwlZUniv7zdhKkzE830Zxghsc2uRbcmAnuW29QWlQGGygpZN5pOzY8HlzdCjBEvnIl6vQ/exec"; 
 
   function loadData() {
@@ -74,8 +73,9 @@
         } else {
           d.data.forEach(item => {
             var badgeClass = "diterima";
-            if (item.status.toLowerCase().includes("proses")) badgeClass = "diproses";
-            if (item.status.toLowerCase().includes("selesai")) badgeClass = "selesai";
+            var st = (item.status || "").toLowerCase();
+            if (st.includes("proses")) badgeClass = "diproses";
+            if (st.includes("selesai")) badgeClass = "selesai";
 
             html += `<tr>
               <td><b style="font-family:monospace; color:#4f46e5;">${item.kode}</b></td>
